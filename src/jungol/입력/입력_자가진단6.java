@@ -8,7 +8,7 @@ public class 입력_자가진단6 {
 
         System.out.print("height = ");
         int height = sc.nextInt();
-        System.out.printf("Your height is %dcm",height);
+        System.out.printf("Your height is %dcm.",height);
 
 
 
