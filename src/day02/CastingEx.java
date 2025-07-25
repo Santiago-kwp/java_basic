@@ -21,7 +21,7 @@ public class CastingEx {
         int intValue3 = (int) doubleValue;
         System.out.println(intValue3);
 
-        // 예외사항 정리 : 자바에서 + 연산자 두 가지 기능을 가지고 있음. 덧셈 연산 , 연결 연산(concat)
+        // 예외사항 정리 : 자바에서 + jungol.연산자 두 가지 기능을 가지고 있음. 덧셈 연산 , 연결 연산(concat)
         String str1 = "3" + 7;
         System.out.println(str1);
 
