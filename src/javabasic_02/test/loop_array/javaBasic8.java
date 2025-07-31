@@ -41,6 +41,28 @@ public class javaBasic8 {
         return inputNumber;
     }
 
+    public static void isValidInputCheckOut() {
+        boolean isValidInput = false;
+
+        while(!isValidInput) {
+            System.out.print("출금액> ");
+            try {
+                // String을 int로 변환 시도
+                checkOutCash = Integer.parseInt(input.nextLine());
+
+                if (deposit < checkOutCash) {
+                    System.out.printf("현재 예금 잔액이 %d원으로 출금액이 부족하니 다시 출금액을 입력해주세요.\n",deposit);
+                    continue;
+                }
+                isValidInput = true; // 유효한 입력이면 루프 종료
+                deposit -= checkOutCash; // 출금액이 맞다면 예금액에서 출금액을 빼고, 루프를 빠져나옴
+            } catch (NumberFormatException e) {
+                // 숫자로 변환할 수 없는 문자열이 입력되었을 때
+                System.out.println("잘못된 형식의 입력입니다. 정수를 입력해주세요.");
+            }
+        }
+    }
+
     public static void accountCheck(int inputNumber) {
         switch(inputNumber) {
             case 1 :
@@ -50,23 +72,11 @@ public class javaBasic8 {
                 break;
 
             case 2 :
-                boolean isValidCheckOut = false;
-                while (!isValidCheckOut) {
-                    System.out.print("출금액> ");
-                    checkOutCash = Integer.parseInt(input.nextLine()); // 사용자 입력을 한 줄 읽어옴
-
-                    if (deposit < checkOutCash) {
-                        System.out.printf("현재 예금 잔액이 %d원으로 출금액이 부족하니 다시 출금액을 입력해주세요.\n",deposit);
-                        continue;
-                    }
-                    isValidCheckOut = true; // 출금액이 맞다면 예금액에서 출금액을 빼고, 루프를 빠져나옴
-                    deposit -= checkOutCash;
-
-                }
+                isValidInputCheckOut();
                 break;
 
             case 3 :
-                System.out.printf("잔고> %d",deposit);
+                System.out.printf("잔고> %d\n",deposit);
                 break;
 
             case 4:
@@ -76,16 +86,16 @@ public class javaBasic8 {
 
         }
     }
-    public static void main(String[] args) {
 
+    public static void main(String[] args) {
 
         showButtons();
         int inputNumber = isValidInputCheck();
         accountCheck(inputNumber);
 
-        while (inputNumber != 4) {  // 4번을 입력하지 않으면
+        while (inputNumber != 4) {  // 4번을 입력하지 않으면 사용자 입력 메뉴 반복
             showButtons();
-            isValidInputCheck();
+            inputNumber = isValidInputCheck();
             accountCheck(inputNumber);
         }
 
