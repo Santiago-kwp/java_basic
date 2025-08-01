@@ -99,6 +99,7 @@ public class javaBasic9 {
                 }
                 System.out.printf("최고 점수: %d\n",scores[studentNumber-1]);
                 System.out.printf("평균 점수: %.1f\n",(double)total/studentNumber);
+
                 break;
 
             case 5:

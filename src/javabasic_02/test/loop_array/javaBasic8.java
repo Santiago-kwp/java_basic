@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class javaBasic8 {
     static Scanner input = new Scanner(System.in);
-    static int deposit;
+    static int deposit; // 잔고
     static int checkOutCash;
 
     public static void showButtons() {
