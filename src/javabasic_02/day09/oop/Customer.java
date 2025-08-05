@@ -70,6 +70,7 @@ public class Customer {
 
     // 7. 영수증 표시하기
     public void menuCartBill() {
+
         int totalBill = 0;
         for (Item item: cart) {
             totalBill += item.getPrice() * item.getNumber();
