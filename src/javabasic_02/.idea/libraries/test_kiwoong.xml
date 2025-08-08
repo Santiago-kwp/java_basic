@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="test_kiwoong">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/day11/test/test_kiwoong.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
