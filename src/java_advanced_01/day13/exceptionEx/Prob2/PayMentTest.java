@@ -1,3 +1,4 @@
+package java_advanced_01.day13.exceptionEx.Prob2;
 
 public class PayMentTest {
 
@@ -13,13 +14,13 @@ public class PayMentTest {
 		
 		// 아래는 Exception 발생  테스트 코드임. 주석을 풀고~ Exception 처리되는지 확인 해 보세요. 
 		
-		// Exception 예제 1. 문제파일의 출력 그림 참고하세요.
+//		 Exception 예제 1. 문제파일의 출력 그림 참고하세요.
 //		CardPayment card2 = new CardPayment("예스24","소설책",2000,"843-12-434","1234",-2);
-//		payProcess( card2 );	
+//		payProcess( card2 );
 		
 		// Exception 예제 2. 문제파일의 출력 그림 참고하세요.
-//		CashPayment cash2 = new CashPayment("G마켓","핸드폰",0,"999-56");
-//		payProcess( cash2 );		
+		CashPayment cash2 = new CashPayment("G마켓","핸드폰",0,"999-56");
+		payProcess( cash2 );
 
 	}
 	

@@ -1,4 +1,4 @@
 package java_advanced_01.day13;
 
-public class A {
+public interface A {
 }

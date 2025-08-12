@@ -1,3 +1,5 @@
+package java_advanced_01.day13.homework_solv_prob2;
+
 public class FactoryExample {
 	
 	public static void main(String[] args) {
@@ -30,7 +32,13 @@ public class FactoryExample {
 	public void getResult(Factory mainFactory, char mainFactorySkill, IWorkingTogether partner) {
 		
 		System.out.println("* " + mainFactory.getFactoryName() + " 공장의 하루 생산량과 파트너 공장 협력 시 추가 생산량은 다음과 같다.");
-		// TODO
+		System.out.println("1. 하루 생산량 = " + mainFactory.makeProducts(mainFactorySkill));
+		if (mainFactory instanceof CarFactory) {
+			System.out.println("2. 파트너 공장 ["+((CarFactory)partner).getFactoryName()+"] 협력 시 추가 생산량 = " +((CarFactory)mainFactory).workTogether(partner));
+		} else if (mainFactory instanceof TVFactory) {
+			System.out.println("2. 파트너 공장 ["+((TVFactory)partner).getFactoryName()+"] 협력 시 추가 생산량 = " +((TVFactory)mainFactory).workTogether(partner));
+		}
+
 		System.out.println("--------------------------------------------------------------");
 	}
 
