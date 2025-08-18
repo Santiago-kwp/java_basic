@@ -1,5 +1,6 @@
 package java_advanced_01.bookMarket;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Welcome {
@@ -40,8 +41,22 @@ public class Welcome {
 			menuIntroduction();
 
 			System.out.print("메뉴 번호를 선택해주세요 ");
-			int n = input.nextInt();
-			// System.out.println(n + "번을 선택했습니다");
+			// try-catch 블록 밖에서 n 변수를 선언합니다.
+			int n = 0;
+			boolean validInput = false;
+
+			// 올바른 입력이 들어올 때까지 반복합니다.
+			while (!validInput) {
+				try {
+					System.out.print("메뉴 번호를 입력하세요: ");
+					n = input.nextInt(); // n에 값을 할당합니다.
+					validInput = true; // 유효한 입력이 들어오면 루프를 종료합니다.
+				} catch (InputMismatchException e) {
+					System.out.println("잘못된 입력입니다. 숫자를 입력해 주세요.");
+					input.nextLine(); // 버퍼에 남아있는 잘못된 입력을 비워줍니다.
+				}
+			}
+
 
 			if (n < 1 || n > 9) {
 				System.out.println("1부터 9까지의 숫자를 입력하세요.");
@@ -164,8 +179,9 @@ public class Welcome {
 				if (str.toUpperCase().equals("Y")) {
 					System.out.println(booklist[numId].getBookId() + " 도서가 장바구니에 추가되었습니다.");
 					// 장바구니에 넣기
-					if (!isCartInBook(booklist[numId].getBookId())) {}
+					if (!isCartInBook(booklist[numId].getBookId())) {
 						mCart.insertBook(booklist[numId]);
+					}
 				}
 				quit = true;
 			} else
