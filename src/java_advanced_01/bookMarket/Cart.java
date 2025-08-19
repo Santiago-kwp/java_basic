@@ -29,7 +29,7 @@ public class Cart implements CartInterface {
     public boolean isCartInBook(String bookId) {
         boolean flag = false;
         for (int i=0; i < mCartCount; i++) {
-            if (bookId == mCartItem.get(i).getBookID()) {
+            if (bookId.equals(mCartItem.get(i).getBookID())) {
                 mCartItem.get(i).setQuantity(mCartItem.get(i).getQuantity() + 1);
                 flag = true;
             }
@@ -40,6 +40,8 @@ public class Cart implements CartInterface {
     @Override
     public void insertBook(Book book) {
         mCartItem.add(new CartItem(book));
+        mCartCount++;
+        System.out.println("here here mCartItem add");
     }
 
     @Override
