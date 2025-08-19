@@ -1,6 +1,5 @@
 package java_advanced_01.day17.anonymousClass.class05;
 
-import java_advanced_01.day13.C;
 
 public class Main {
     public static void main(String[] args) {
