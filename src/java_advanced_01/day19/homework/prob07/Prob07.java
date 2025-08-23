@@ -9,6 +9,8 @@ import lombok.Getter;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Getter
 @AllArgsConstructor
@@ -29,5 +31,14 @@ public class Prob07 {
                 new Fruit("Cherry",2.99)
 
         );
+
+        Map<Character, List<Fruit>> firstCharFruits = numbers.stream().
+                collect(Collectors.groupingBy(fruit -> fruit.getFruitName().charAt(0)));
+
+        firstCharFruits.forEach((k,v)->{
+            System.out.println(k + ":" + v.stream().map(Fruit::getFruitName).
+                    collect(Collectors.joining(",")));
+        });
+
     }
 }
