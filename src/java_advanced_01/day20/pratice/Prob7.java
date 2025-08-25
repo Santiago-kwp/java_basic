@@ -1,5 +1,6 @@
 package java_advanced_01.day20.pratice;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,7 +21,9 @@ public class Prob7 {
                 fileSize += n;
             }
 
+            File file = new File("C:/Temp/copy.jpg");
             System.out.println("file size of copy.jpg : " + fileSize);
+            System.out.println("file size of copy.jpg : " + file.length());
         } catch (IOException e) {
             e.printStackTrace();
         }

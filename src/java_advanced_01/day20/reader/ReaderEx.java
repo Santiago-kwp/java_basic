@@ -35,7 +35,6 @@ public class ReaderEx {
         }
 
         // 3. 문자열로 읽기
-
         reader.close();
 
 
