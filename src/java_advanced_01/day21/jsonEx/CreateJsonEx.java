@@ -1,6 +1,5 @@
 package java_advanced_01.day21.jsonEx;
 
-import java_advanced_01.day15.collection.mapEx.HashMapEx;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -8,8 +7,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.nio.charset.Charset;
-import java.nio.file.FileStore;
-import java.nio.file.Files;
 
 public class CreateJsonEx {
     public static void main(String[] args) {
