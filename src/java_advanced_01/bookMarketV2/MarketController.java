@@ -54,6 +54,7 @@ public class MarketController {
     }
 
     private void receiptUser(User user) {
+        
     }
 
     private void removeItem(User user) {
