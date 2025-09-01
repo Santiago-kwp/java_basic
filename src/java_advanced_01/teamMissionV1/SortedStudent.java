@@ -1,6 +1,7 @@
 package java_advanced_01.teamMissionV1;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -11,7 +12,7 @@ public class SortedStudent implements Input, Printable {
     private HashMap<String, Student> studentInfo;
     private TreeSet<Student> sortedInfo;
     private static final String IN_FILE_NAME = "student.dat";
-    private final SetOutput studentDataWriter;
+    private final StudentDataWriter studentDataWriter;
     private static final String OUT_FILE_NAME = "orderByAvg.dat";
 
 
@@ -29,17 +30,13 @@ public class SortedStudent implements Input, Printable {
     public static void main(String[] args) {
         SortedStudent sortedStudent = new SortedStudent();
 
-        // 메소드 참조를 통해 comaparator의 compareTo 메소드 구현부 주입
-        sortedStudent.createTreeSet(
-            Comparator.comparingDouble(Student::getAverage).thenComparing(Student::getName));
+        // 람다 표현식 대신 Serializable을 구현한 클래스 사용
+        sortedStudent.createTreeSet(new StudentComparator());
 
         sortedStudent.printResult();
 
         sortedStudent.saveData(); // 데이터를 파일에 저장
-        System.out.println("입력을 종료합니다.");
-//        System.out.printf("[완료] %d명의 정보가 %s 에 저장되었습니다.\n", studentInfo.size(), FILE_NAME);
-//        결과 파일: ./orderByAvg.dat
-//[완료] 정렬된 결과를 파일로 저장했습니다.
+
 
     }
 
@@ -73,8 +70,25 @@ public class SortedStudent implements Input, Printable {
     public void saveData() {
         try {
             studentDataWriter.outputObject(sortedInfo, OUT_FILE_NAME);
+            System.out.printf("%d명의 정보가 %s 에 저장되었습니다.\n", sortedInfo.size(), OUT_FILE_NAME);
+            System.out.println("[완료] 정렬된 결과를 파일로 저장했습니다.");
         } catch (IOException e) {
+            e.printStackTrace();
             System.err.println("정렬된 학생 정보 저장 중 오류가 발생했습니다: " + e.getMessage());
         }
+    }
+
+
+}
+
+// 별도의 클래스로 Comparator를 구현하고 Serializable을 구협합니다.
+class StudentComparator implements Comparator<Student>, Serializable {
+    @Override
+    public int compare(Student s1, Student s2) {
+        int result = Double.compare(s1.getAverage(), s2.getAverage());
+        if (result == 0) {
+            result = s1.getName().compareTo(s2.getName());
+        }
+        return result;
     }
 }

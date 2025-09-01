@@ -15,7 +15,7 @@ public class StudentInput implements Input {
   private HashMap<String, Student> studentInfo;
   private Scanner scanner = new Scanner(System.in);
   private static final String FILE_NAME = "student.dat";
-  private final MapOutput studentDataWriter;
+  private final StudentDataWriter studentDataWriter;
 
   public static void main(String[] args) {
     StudentInput studentInput = new StudentInput();
@@ -39,7 +39,6 @@ public class StudentInput implements Input {
       if ("^^".equals(name)) {
         break; // 종료 조건
       }
-
       // 중복 이름 검사 및 학생 데이터 입력
       Student newStudent = checkKeyAndInputData(name);
 

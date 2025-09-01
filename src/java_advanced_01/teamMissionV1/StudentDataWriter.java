@@ -8,12 +8,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-// 학생 정보 데이터를 객체 데이터로 쓰기 위한 클래스로 공통인 Output 클래스를 구현함
-public class StudentDataWriter implements MapOutput, SetOutput {
+// 학생 정보 데이터를 객체 데이터로 쓰기 위한 클래스로 outputObject를 오버로딩하여 정의함.
+public class StudentDataWriter {
     // 필드 없이 메소드만 제공
 
     // Map 데이터를 파일로 저장하는 로직
-    @Override
     public void outputObject(Map<String, ? extends Serializable> studentInfo, String fileName)
         throws IOException {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName))) {
@@ -23,7 +22,6 @@ public class StudentDataWriter implements MapOutput, SetOutput {
     }
 
     // Set 데이터를 파일로 저장하는 로직
-    @Override
     public void outputObject(Set<? extends Serializable> studentInfo, String fileName)
         throws IOException {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName))) {
