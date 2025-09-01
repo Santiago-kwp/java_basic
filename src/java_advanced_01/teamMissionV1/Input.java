@@ -34,5 +34,5 @@ public interface Input {
         }
     }
 
-    void loadObjectFromFile(String fileName) throws IOException, ClassNotFoundException;
+//    void loadObjectFromFile(String fileName) throws IOException, ClassNotFoundException;
 }

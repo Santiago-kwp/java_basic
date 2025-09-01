@@ -41,47 +41,37 @@ public class ChatClient {
       // 사용자 닉네임 서버에 전달
       out.println(nickName);
 
-      // 환영 메시지 콘솔 창 출력
-      String welcomeMsg = in.readLine();
-      System.out.println(welcomeMsg);
+      // 환영 메시지 콘솔 창 출력 - 여러줄로 출력
+      String[] welcomeMsgs = in.readLine().split(",");
+      for (String s : welcomeMsgs) {
+        System.out.println(s);
+      }
+      // 사용자 첫 입력
+      System.out.print(nickName + "> ");
 
-      // 서버로부터의 브로드캐스트 메시지를 독립적으로 수신하는 스레드를 람다식으로 구현
-      Thread readerThread = new Thread(() -> {
-        try (BufferedReader broadCastIn = new BufferedReader(
-            new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8))
-        ) {
-          String serverMsg;
-          while (!Thread.currentThread().isInterrupted()
-              && (serverMsg = broadCastIn.readLine()) != null) {
-            // 서버로부터 받은 메시지를 클라이언트의 콘솔창에 출력
-            // 1. 현재 프롬프트 줄 지우기: 커서를 맨 앞으로 보내고(CR), 줄의 끝까지 지움(EL)
-            System.out.print("\r" + "\033[K");
-            // 2. 메시지 출력
-            System.out.println(serverMsg);
-            // 3. 다시 프롬프트 출력
-            System.out.print(nickName + "> ");
-            // 4. 입력 버퍼를 비워 사용자 입력이 사라지지 않게 함
-            System.out.flush();
-          }
-        } catch (IOException e) {
-          // 서버 연결이 끊어지면 예외 발생
-          System.out.println("\n[Client] 서버 연결이 종료되었습니다.");
-        }
-      });
-
-      // 브로드 캐스팅된 다른 사람의 메시지 수신 쓰레드 시작
-      readerThread.start();
+      // 서버로부터의 브로드캐스트 메시지를 독립적으로 수신하는 스레드를 생성하는 정적 메소드
+      Thread readerThread = getReaderThread(socket, nickName);
 
       // 메인 스레드는 키보드 입력만 처리
       String msg;
       while (true) {
-        msg = keyboard.readLine(); // 클라이언트의 키보드 입력
-        if (msg == null) {
-          break;   // EOF (Ctrl+D/Ctrl+Z)
-        }
-        // 서버에 클라이언트 메시지 전달
-        out.println(msg);
+        try {
+          msg = keyboard.readLine(); // 클라이언트의 키보드 입력
+          if (msg == null) {
+            break;   // EOF (Ctrl+D/Ctrl+Z)
+          }
+          // 서버에 클라이언트 메시지 전달
+          out.println(msg);
 
+          if (msg.equals("/quit")) {
+            // 서버의 종료 메시지 클라이언트 창에 띄움
+            String terminateMsg = in.readLine();
+            System.out.println(terminateMsg);
+            break;
+          }
+        } catch (IOException e) {
+          break;
+        }
       }
       // 메인 스레드가 종료되면 readerThread도 종료
       readerThread.interrupt();
@@ -90,7 +80,37 @@ public class ChatClient {
 
     } catch (IOException | InterruptedException e) {
       System.err.println("[Client] Error: " + e.getMessage());
+
     }
+  }
+
+  private static Thread getReaderThread(Socket socket, String nickName) {
+    Thread readerThread = new Thread(() -> {
+      try (BufferedReader broadCastIn = new BufferedReader(
+          new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8))
+      ) {
+        String serverMsg;
+        while (!Thread.currentThread().isInterrupted()
+            && (serverMsg = broadCastIn.readLine()) != null && !socket.isClosed()) {
+          // 서버로부터 받은 메시지를 클라이언트의 콘솔창에 출력
+          // 1. 현재 프롬프트 줄 지우기: 커서를 맨 앞으로 보내고(Carriage Return), 커서 위치에서 현재 줄의 끝까지 지움(EL)
+          System.out.print("\r" + "\033[K");
+          // 2. 메시지 출력
+          System.out.println(serverMsg);
+          // 3. 다시 프롬프트 출력
+          System.out.print(nickName + "> ");
+          // 4. 입력 버퍼를 비워 사용자 입력이 사라지지 않게 함
+          System.out.flush();
+        }
+      } catch (IOException e) {
+        // 서버 연결이 끊어지면 예외 발생
+        System.out.println("\n[Client] 서버 연결이 종료되었습니다.");
+      }
+    });
+
+    // 브로드 캐스팅된 다른 사람의 메시지 수신 쓰레드 시작
+    readerThread.start();
+    return readerThread;
   }
 }
 

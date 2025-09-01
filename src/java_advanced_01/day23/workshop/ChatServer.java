@@ -21,7 +21,7 @@ public class ChatServer {
   private static final ExecutorService POOL = Executors.newCachedThreadPool();
   private static final AtomicInteger CLIENT_SEQ = new AtomicInteger(1);
   // 닉네임 관리 정적 변수 지정
-  private static Set<String> userNicknames = new HashSet<>();
+  private static final Set<String> userNicknames = new HashSet<>();
 
   // 모든 클라이언트의 출력 스트림을 관리하는 동기화된 집합
   private static final Set<PrintWriter> clientWriters = Collections.synchronizedSet(
@@ -66,6 +66,7 @@ public class ChatServer {
 
   // 모든 클라이언트에게 메시지를 브로드캐스팅하는 메서드
   private static void broadcast(String message) {
+    // 한 스레드가 브로드캐스트 하는 동안 전체 clientWriters가 나가거나(remove), 추가되어(add) 반복문에 영향을 미치지 못하게 해야 한다.
     synchronized (clientWriters) {
       for (PrintWriter writer : clientWriters) {
         writer.println(message);
@@ -111,10 +112,9 @@ public class ChatServer {
             userNicknames.add(nickName); // 클라이언트 유저 정보에 추가
             // 1. 클라이언트 연결 시 출력 스트림 목록에 추가
             clientWriters.add(out);
-            out.printf("""
-                환영합니다.  %s 님.
-                현재 접속자 목록을 보고 싶으시면 '/who' , 현재의 채팅을 끝내시려면 '/quit'를 입력하세요!
-                """, nickName);
+            // welcome message out to client
+            out.println("환영합니다.  " + nickName
+                + " 님. ,현재 접속자 목록을 보고 싶으시면 '/who',현재의 채팅을 끝내시려면 '/quit'를 입력하세요!");
 
             broadcast(nickName + " joined!"); // 각 클라이언트의 접속을 브로드캐스트 해줌
           }
@@ -130,8 +130,8 @@ public class ChatServer {
             userNicknames.remove(nickName); // 유저 퇴장 시 접속 닉네임에서 제외
             break;
           } else if ("/who".equals(line.trim())) {
-            String totalUsers = String.join("님, ", userNicknames);
-            out.println("현재 접속자 : " + totalUsers + "님");
+            String currentUsers = String.join("님, ", userNicknames);
+            out.println("현재 접속자 : " + currentUsers + "님");
           }
           // 클라이언트의 입력이 공백인 경우 브로드 캐스트 하지 않음
           else if (line.trim().equals("\n")) {
